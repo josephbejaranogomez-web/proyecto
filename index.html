@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>⚽ Predictor Deportivo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bienvenida">
+
+<div class="overlay"></div>
+
+<div class="welcome-container fade-in">
+
+    <h1 class="titulo">⚽ Predictor Deportivo</h1>
+
+    <p class="descripcion">
+        Sistema inteligente de análisis y predicción de eventos deportivos.  
+        Evalúa probabilidades, simula resultados y calcula posibles ganancias.
+    </p>
+
+    <button onclick="entrar()" class="btn-main">
+        Ingresar al sistema
+    </button>
+
+    
+    <div class="autores">
+
+        <p>Hecho por:</p>
+
+        <div class="personas">
+
+            <div class="persona">
+                <img src="img/joseph.jpg" alt="Joseph">
+                <span class="nombre">Joseph</span>
+                <span class="info">📞 3214794350</span>
+                <span class="info">✉ josephbejaranogomez@gmail.com</span>
+            </div>
+
+            <div class="persona">
+                <img src="img/jorge.jpg" alt="Jorge">
+                <span class="nombre">Jorge</span>
+                <span class="info">📞 310 586 6694</span>
+                <span class="info">✉ jdavideh30@gmail.com</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+function entrar(){
+    document.body.classList.add("fade-out");
+    setTimeout(() => {
+        window.location.href = "app.html";
+    }, 500);
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>⚽ Predictor Deportivo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="navbar">
+    <h2 class="logo">⚽ Predictor Deportivo</h2>
+</div>
+
+<div class="container">
+
+    <h2>Sistema de Predicción Deportiva</h2>
+
+    <div class="saldo-box">
+        💰 Saldo: <span id="saldo"></span>
+    </div>
+
+    <h3>Eventos deportivos</h3>
+
+    <div class="cards">
+
+        <div class="card">
+            <h4>Barcelona vs Madrid</h4>
+            <p>Probabilidad: 65%</p>
+            <div class="barra"><div class="progreso" style="width:65%"></div></div>
+            <p>Cuota: 1.65</p>
+            <input type="number" id="a1" placeholder="Apuesta">
+            <button onclick="apostar(1.65, 0.65, 'a1')">Apostar</button>
+        </div>
+
+        <div class="card">
+            <h4>PSG vs Bayern</h4>
+            <p>Probabilidad: 60%</p>
+            <div class="barra"><div class="progreso" style="width:60%"></div></div>
+            <p>Cuota: 1.80</p>
+            <input type="number" id="a2" placeholder="Apuesta">
+            <button onclick="apostar(1.80, 0.60, 'a2')">Apostar</button>
+        </div>
+
+        <div class="card">
+            <h4>Liverpool vs Chelsea</h4>
+            <p>Probabilidad: 55%</p>
+            <div class="barra"><div class="progreso" style="width:55%"></div></div>
+            <p>Cuota: 2.10</p>
+            <input type="number" id="a3" placeholder="Apuesta">
+            <button onclick="apostar(2.10, 0.55, 'a3')">Apostar</button>
+        </div>
+
+    </div>
+
+    
+    <h3>⚽ Crear partido personalizado</h3>
+
+    <div class="card">
+        <input type="text" id="equipo1" placeholder="Equipo 1">
+        <input type="text" id="equipo2" placeholder="Equipo 2">
+        <input type="number" id="apuestaCustom" placeholder="Valor de apuesta">
+        <button onclick="simularPartido()">Simular partido</button>
+    </div>
+
+    <h3>Resultado</h3>
+    <p id="resultado"></p>
+
+    
+    <h3>📜 Historial</h3>
+    <ul id="historial"></ul>
+
+</div>
+
+<script>
+
+
+let saldo = localStorage.getItem("saldo") 
+    ? parseFloat(localStorage.getItem("saldo")) 
+    : 10000;
+
+document.getElementById("saldo").innerText = saldo;
+
+
+function guardarSaldo(){
+    localStorage.setItem("saldo", saldo);
+}
+
+
+function agregarHistorial(texto){
+    let lista = document.getElementById("historial");
+    let item = document.createElement("li");
+    item.innerText = texto;
+    lista.appendChild(item);
+}
+
+
+function apostar(cuota, probabilidad, inputId){
+
+    let apuesta = parseInt(document.getElementById(inputId).value);
+
+    if(!apuesta || apuesta <= 0){
+        alert("Ingresa un valor válido");
+        return;
+    }
+
+    if(apuesta > saldo){
+        alert("Saldo insuficiente");
+        return;
+    }
+
+    let gana = Math.random() < probabilidad;
+
+    if(gana){
+        let ganancia = apuesta * cuota;
+        saldo += ganancia;
+        alert("✅ Ganaste " + ganancia);
+        agregarHistorial("Evento: Ganaste $" + ganancia);
+    } else {
+        saldo -= apuesta;
+        alert("❌ Perdiste " + apuesta);
+        agregarHistorial("Evento: Perdiste $" + apuesta);
+    }
+
+    guardarSaldo();
+    document.getElementById("saldo").innerText = saldo;
+}
+
+
+function simularPartido(){
+
+    let equipo1 = document.getElementById("equipo1").value;
+    let equipo2 = document.getElementById("equipo2").value;
+    let apuesta = parseInt(document.getElementById("apuestaCustom").value);
+
+    if(!equipo1 || !equipo2){
+        alert("Ingresa ambos equipos");
+        return;
+    }
+
+    if(!apuesta || apuesta <= 0){
+        alert("Ingresa una apuesta válida");
+        return;
+    }
+
+    if(apuesta > saldo){
+        alert("No tienes saldo suficiente");
+        return;
+    }
+
+    let ganador = Math.random() < 0.5 ? equipo1 : equipo2;
+    let ganaUsuario = Math.random() < 0.5;
+
+    let texto = "";
+
+    if(ganaUsuario){
+        let ganancia = apuesta * 2;
+        saldo += ganancia;
+        texto = "🏆 Ganador: " + ganador + " | Ganaste $" + ganancia;
+        agregarHistorial("Custom: Ganaste $" + ganancia);
+    } else {
+        saldo -= apuesta;
+        texto = "🏆 Ganador: " + ganador + " | Perdiste $" + apuesta;
+        agregarHistorial("Custom: Perdiste $" + apuesta);
+    }
+
+    document.getElementById("resultado").innerText = texto;
+
+    guardarSaldo();
+    document.getElementById("saldo").innerText = saldo;
+}
+
+</script>
+
+</body>
+</html>
